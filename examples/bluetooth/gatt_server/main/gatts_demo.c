@@ -532,3 +532,7 @@ void app_main()
 
     return;
 }
+
+void vPortCleanUpTCB (void *pxTCB) {
+
+}
