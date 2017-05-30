@@ -21,6 +21,7 @@
 #include "soc/soc.h"
 #include "soc/rtc.h"
 #include "soc/rtc_cntl_reg.h"
+#include "esp_clk.h"
 
 /* Number of cycles to wait from the 32k XTAL oscillator to consider it running.
  * Larger values increase startup delay. Smaller values may cause false positive
@@ -28,8 +29,6 @@
  */
 #define XTAL_32K_DETECT_CYCLES  32
 #define SLOW_CLK_CAL_CYCLES     CONFIG_ESP32_RTC_CLK_CAL_CYCLES
-
-static void select_rtc_slow_clk(rtc_slow_freq_t slow_clk);
 
 static const char* TAG = "clk";
 /*
@@ -88,7 +87,7 @@ void IRAM_ATTR ets_update_cpu_frequency(uint32_t ticks_per_us)
  */
 static uint32_t s_rtc_slow_clk_cal = 0;
 
-static void select_rtc_slow_clk(rtc_slow_freq_t slow_clk)
+void select_rtc_slow_clk(rtc_slow_freq_t slow_clk)
 {
     if (slow_clk == RTC_SLOW_FREQ_32K_XTAL) {
         /* 32k XTAL oscillator needs to be enabled and running before it can
